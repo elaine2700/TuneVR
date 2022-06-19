@@ -6,13 +6,19 @@ public class Object : MonoBehaviour
     [SerializeField] AudioClip destroySound;
     [SerializeField] float timeToDestroy = 1f;
 
-    public void DestroyObject(bool hitByPlayer)
+    public bool hit = false;
+
+    private void Start()
     {
+        hit = false;
+    }
+
+    public void DestroyObject()
+    {
+        hit = true;
+        GetComponentInChildren<Renderer>().enabled = false;
         Destroy(gameObject, timeToDestroy);
-        if (hitByPlayer)
-        {
-            // show effect
-            // play sound
-        }
+        destroyEffect.Play();
+        // play clip sound
     }
 }
