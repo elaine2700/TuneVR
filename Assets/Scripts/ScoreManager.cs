@@ -9,8 +9,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreField;
 
     int currentScore;
-
-    // todo singleton pattern
+    public int CurrentScore { get { return currentScore; } }
 
     private void Start()
     {

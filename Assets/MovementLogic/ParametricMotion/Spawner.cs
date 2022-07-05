@@ -8,6 +8,8 @@ public class Spawner : MonoBehaviour
     public Clock Clock;
     public MovingNote NotePrefab;
 
+    GameManager gameManager;
+
     public int BeatSpawnInterval;
 
     public float NoteSpawnDistance = 1;
@@ -20,6 +22,7 @@ public class Spawner : MonoBehaviour
     private void Awake()
     {
         nextSpawnBeat = BeatSpawnInterval - 1;
+        
     }
 
     private void Update()
@@ -45,19 +48,28 @@ public class Spawner : MonoBehaviour
                 BeatSpawnInterval = 8;
             }
         }
-        //Debug.Log(Clock.CurrentBeat());
+
         float nextSpawnTime = (60f / Clock.BPM) * nextSpawnBeat;
         float currentTime = GetCurrentTime();
 
-        if (currentTime > nextSpawnTime - NoteSpawnSecondsAheadOfArrivalBeat)
+        if (Clock.SongPlaying())
         {
-            Vector3 position = transform.position - Vector3.back * NoteSpawnDistance;
+            if (currentTime > nextSpawnTime - NoteSpawnSecondsAheadOfArrivalBeat)
+            {
+                Vector3 position = transform.position - Vector3.back * NoteSpawnDistance;
 
-            MovingNote note = Instantiate(NotePrefab, position, Quaternion.identity);
-            note.Speed = NoteSpawnDistance / NoteSpawnSecondsAheadOfArrivalBeat;
+                MovingNote note = Instantiate(NotePrefab, position, Quaternion.identity);
+                note.Speed = NoteSpawnDistance / NoteSpawnSecondsAheadOfArrivalBeat;
 
-            nextSpawnBeat += BeatSpawnInterval;
-        }        
+                nextSpawnBeat += BeatSpawnInterval;
+            }
+        }
+        else
+        {
+            // Invoke Stop Game after 5 seconds
+        }
+
+             
     }
 
     private float GetCurrentTime()

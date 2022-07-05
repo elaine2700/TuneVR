@@ -7,12 +7,22 @@ public class Clock : MonoBehaviour
     public TextMeshProUGUI gameTime, dspTime, beat;
     public AudioClip song;
 
+    public SongSettings songSettings;
+
+    GameManager gameManager;
     //public GameObject Something;
     public int BPM = 60;
 
     private float startingGameTime, startingDSPTime, startingOffset;
 
-    private bool running;
+    public bool running;
+
+    private void OnEnable()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+        song = songSettings.song;
+        BPM = songSettings.BMP;
+    }
 
     private IEnumerator Start()
     {
@@ -23,8 +33,10 @@ public class Clock : MonoBehaviour
         startingGameTime = Time.time;
         startingDSPTime = (float)AudioSettings.dspTime;
 
+        // set song and play
         GetComponent<AudioSource>().clip = song;
         GetComponent<AudioSource>().Play();
+        gameManager.gameStarted = true;
     }
 
     private void Update()
@@ -35,7 +47,7 @@ public class Clock : MonoBehaviour
         gameTime.text = $"Game: {currentTime:00.00}";
         dspTime.text = $"DSP: {currentDSPTime:00.00}";
         beat.text = $"Beat: {CurrentBeat()}";
-
+        
         //if (CurrentBeat() == 3)
         //{
         //    Something.GetComponent<Spawner>().BeatSpawnInterval = 1;
@@ -65,5 +77,13 @@ public class Clock : MonoBehaviour
     public int CurrentBeat()
     {
         return Mathf.FloorToInt(CurrentTime() / (BPM / 60f)) + 1;
+    }
+
+    public bool SongPlaying()
+    {
+        bool songPlaying = GetComponent<AudioSource>().isPlaying;
+        if (!songPlaying)
+            running = false;
+        return songPlaying;
     }
 }
