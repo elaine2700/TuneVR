@@ -76,7 +76,7 @@ public class Clock : MonoBehaviour
 
     public int CurrentBeat()
     {
-        return Mathf.FloorToInt(CurrentTime() / (BPM / 60f)) + 1;
+        return Mathf.FloorToInt(CurrentTime() / (60f / BPM)) + 1;
     }
 
     public bool SongPlaying()

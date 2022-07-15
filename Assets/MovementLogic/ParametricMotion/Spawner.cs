@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -19,6 +20,8 @@ public class Spawner : MonoBehaviour
 
     public int nextSpawnBeat;
 
+    [SerializeField] List<int> Intervals = new List<int>();
+
     private void Awake()
     {
         nextSpawnBeat = BeatSpawnInterval - 1;
@@ -29,9 +32,12 @@ public class Spawner : MonoBehaviour
     {
         if (BpmMemory != Clock.CurrentBeat())
         {
-            BpmMemory = Clock.CurrentBeat();
-            RandomMemory = Random.Range(0, 10);
-            if (RandomMemory < 1)
+            //BpmMemory = Clock.CurrentBeat();
+            int indexInterval = Random.Range(0, Intervals.Count);
+            RandomMemory = Intervals[indexInterval];
+            BeatSpawnInterval = RandomMemory;
+            //RandomMemory = Random.Range(0, Intervals.Count - 1);
+            /*if (RandomMemory < 1)
             {
                 BeatSpawnInterval = 1;
             }
@@ -45,8 +51,9 @@ public class Spawner : MonoBehaviour
             }
             else if (RandomMemory < 10)
             {
-                BeatSpawnInterval = 8;
-            }
+                BeatSpawnInterval = 2;
+            }*/
+
         }
 
         float nextSpawnTime = (60f / Clock.BPM) * nextSpawnBeat;
@@ -60,6 +67,7 @@ public class Spawner : MonoBehaviour
 
                 MovingNote note = Instantiate(NotePrefab, position, Quaternion.identity);
                 note.Speed = NoteSpawnDistance / NoteSpawnSecondsAheadOfArrivalBeat;
+               
 
                 nextSpawnBeat += BeatSpawnInterval;
             }

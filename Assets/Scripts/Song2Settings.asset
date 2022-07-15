@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51b7126f3a5b734fbc58f6cf066bdd8, type: 3}
   m_Name: Song2Settings
   m_EditorClassIdentifier: 
-  song: {fileID: 8300000, guid: 8a42c9923e521924eb7a8eb3702293bf, type: 3}
-  BMP: 60
+  song: {fileID: 8300000, guid: 9271e86c770c83941941b017269dc035, type: 3}
+  BMP: 95
   songName: Something
